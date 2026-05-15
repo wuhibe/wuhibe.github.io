@@ -1,0 +1,178 @@
+---
+interface Props {
+  slug: string;
+  name: string;
+  tagline: string;
+  stack: string[];
+  role: string;
+  link: string;
+  displayLink: string;
+}
+
+const { slug, name, tagline, stack, role, link, displayLink } = Astro.props;
+const filename = `${slug}.ts`;
+const stackLiteral = '[' + stack.map((s) => `"${s}"`).join(', ') + ']';
+---
+
+<article class="card reveal" data-card>
+  <header class="card-head">
+    <div class="dots" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+    <span class="filename">{filename}</span>
+    <a class="open-link" href={link} target="_blank" rel="noopener" aria-label={`Open ${name}`}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M7 17 17 7M9 7h8v8"/>
+      </svg>
+    </a>
+  </header>
+  <pre class="code"><code>
+<span class="line"><span class="kw">const</span> <span class="var">project</span> = &#123;</span>
+<span class="line">  <span class="prop">name</span>:    <span class="str">"{name}"</span>,</span>
+<span class="line">  <span class="prop">tagline</span>: <span class="str">"{tagline}"</span>,</span>
+<span class="line">  <span class="prop">stack</span>:   <span class="str">{stackLiteral}</span>,</span>
+<span class="line">  <span class="prop">role</span>:    <span class="str">"{role}"</span>,</span>
+<span class="line">  <span class="prop">link</span>:    <span class="str">"{displayLink}"</span></span>
+<span class="line">&#125;</span>
+  </code></pre>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  .card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 360ms var(--ease), transform 360ms var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+    box-shadow: var(--shadow-2);
+  }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dots {
+    display: inline-flex;
+    gap: 6px;
+  }
+
+  .dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .dots span:nth-child(1) { background: #ff5f57; }
+  .dots span:nth-child(2) { background: #febc2e; }
+  .dots span:nth-child(3) { background: #28c840; }
+
+  :root[data-theme='light'] .dots span:nth-child(1) { background: #ff6b63; }
+  :root[data-theme='light'] .dots span:nth-child(2) { background: #ffc043; }
+  :root[data-theme='light'] .dots span:nth-child(3) { background: #2ecc54; }
+
+  .filename {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--muted);
+    flex: 1;
+  }
+
+  .open-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: var(--radius-sm);
+    color: var(--muted);
+    border-bottom: none;
+  }
+
+  .open-link:hover {
+    color: var(--accent);
+  }
+
+  .open-link svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .code {
+    margin: 0;
+    padding: 18px 18px 20px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  .line {
+    display: block;
+    padding-left: 2ch;
+    text-indent: -2ch;
+  }
+
+  .code code {
+    display: block;
+  }
+
+  .kw { color: var(--keyword); }
+  .var { color: var(--text); }
+  .prop { color: var(--text); }
+  .str { color: var(--string); }
+
+  /* Typewriter reveal per line when visible */
+  .card .line {
+    opacity: 0;
+  }
+
+  .card.is-visible .line {
+    animation: line-in 0.4s var(--ease) forwards;
+  }
+
+  .card.is-visible .line:nth-child(1) { animation-delay: 0.05s; }
+  .card.is-visible .line:nth-child(2) { animation-delay: 0.14s; }
+  .card.is-visible .line:nth-child(3) { animation-delay: 0.22s; }
+  .card.is-visible .line:nth-child(4) { animation-delay: 0.30s; }
+  .card.is-visible .line:nth-child(5) { animation-delay: 0.38s; }
+  .card.is-visible .line:nth-child(6) { animation-delay: 0.46s; }
+  .card.is-visible .line:nth-child(7) { animation-delay: 0.54s; }
+
+  @keyframes line-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .card .line {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+</style>

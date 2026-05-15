@@ -1,0 +1,71 @@
+---
+interface StackGroup {
+  label: string;
+  items: string[];
+}
+
+interface Props {
+  groups: StackGroup[];
+}
+
+const { groups } = Astro.props;
+---
+
+<div class="stack">
+  {groups.map((group) => (
+    <div class="group">
+      <div class="group-label">{group.label}</div>
+      <ul class="chips">
+        {group.items.map((item) => <li class="chip">{item}</li>)}
+      </ul>
+    </div>
+  ))}
+</div>
+
+<style>
+  .stack {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  @media (min-width: 720px) {
+    .stack {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .group-label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: lowercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+
+  .chips {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    padding: 5px 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text);
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+  }
+
+  .chip:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+</style>

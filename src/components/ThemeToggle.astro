@@ -1,0 +1,98 @@
+---
+
+---
+
+<button
+  id="theme-toggle"
+  type="button"
+  aria-label="Toggle color theme"
+  title="Toggle theme"
+>
+  <svg
+    class="icon sun"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path
+      d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"
+    ></path>
+  </svg>
+  <svg
+    class="icon moon"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"></path>
+  </svg>
+</button>
+
+<style>
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text);
+    transition:
+      border-color var(--dur) var(--ease),
+      color var(--dur) var(--ease),
+      transform var(--dur) var(--ease);
+  }
+
+  button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  button:active {
+    transform: translateY(1px);
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  :root[data-theme="dark"] .sun {
+    display: block;
+  }
+  :root[data-theme="dark"] .moon {
+    display: none;
+  }
+  :root[data-theme="light"] .sun {
+    display: none;
+  }
+  :root[data-theme="light"] .moon {
+    display: block;
+  }
+</style>
+
+<script>
+  const btn = document.getElementById("theme-toggle");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      const current =
+        document.documentElement.getAttribute("data-theme") || "dark";
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      try {
+        localStorage.setItem("theme", next);
+      } catch (_) {}
+    });
+  }
+</script>

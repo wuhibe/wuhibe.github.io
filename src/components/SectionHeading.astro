@@ -1,0 +1,17 @@
+---
+interface Props {
+  id?: string;
+  label: string;
+}
+const { id, label } = Astro.props;
+---
+
+<h2 id={id} class="section-heading">
+  <span>{label}</span>
+</h2>
+
+<style>
+  h2 {
+    /* uses .section-heading from globals.css for the dot accent */
+  }
+</style>
